@@ -7,7 +7,7 @@
  */
 
 
-//Medidas de segurança para impedir acesso direto ao arquivo do plugin
+//Medidas de segurança para impedir acesso direto ao arquivo do plugin se não estiver no wordpress
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -15,6 +15,11 @@ if (!defined('ABSPATH')) {
 function adiciona_classes($content)
 {
     $dom = new DOMDocument();
+
+    //valida se existe um conteudo antes de iniciar a função pois tentar ativar a função em um novo post gera um erro crítico de que não existe conteudo.
+    if (empty($content) || !is_string($content)) {
+        return $content;
+    }
 
     $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
 
